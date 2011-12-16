@@ -1,0 +1,33 @@
+package ch.bbv.julklapp;
+
+import javax.persistence.EntityManager;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import ch.bbv.julklapp.core.dao.Circle;
+import ch.bbv.julklapp.core.dao.Member;
+import ch.bbv.julklapp.persistence.EMF;
+
+@Path("/circles")
+public class MemberResource {
+
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/{circleName}/{memberName}")
+	public String createMember(@PathParam("name") String name) {
+		EntityManager em = EMF.get().createEntityManager();
+		try {
+			Circle circle = new Circle();
+			circle.setName(name);
+			em.getTransaction().begin();
+			em.persist(circle);
+			em.getTransaction().commit();
+		} finally {
+			em.close();
+		}
+		return "Saved new circle " + name;
+	}
+}

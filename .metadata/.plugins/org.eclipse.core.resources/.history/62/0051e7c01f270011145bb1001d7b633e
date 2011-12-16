@@ -1,0 +1,9 @@
+package ch.bbv.julklapp;
+
+import javax.ws.rs.Path;
+
+@Path("/circles")
+public class MemberResource {
+
+	
+}

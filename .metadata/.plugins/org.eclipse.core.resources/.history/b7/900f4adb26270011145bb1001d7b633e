@@ -1,0 +1,27 @@
+import javax.ws.rs.core.MediaType;
+
+import ch.bbv.julklapp.core.dao.Circle;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+
+
+public class JulklappClient {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Client client = Client.create();
+		WebResource resource = client.resource("http://localhost:8888");
+		
+		resource.path("/circles/first");
+		resource.accept(MediaType.APPLICATION_JSON);
+		Circle circle = new Circle();
+		circle.setName("first");
+		resource.put(Circle.class, circle);
+	}
+	
+	
+
+}
