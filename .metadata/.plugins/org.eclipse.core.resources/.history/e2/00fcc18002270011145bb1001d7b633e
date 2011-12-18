@@ -1,7 +1,0 @@
-package ch.bbv.julklapp;
-
-import org.restlet.Application;
-
-public class JulklappApplication extends Application {
-
-}

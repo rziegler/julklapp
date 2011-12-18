@@ -1,8 +1,0 @@
-package ch.bbv.julklapp;
-
-import org.restlet.resource.ServerResource;
-
-public class JulklappResource extends ServerResource {
-
-	
-}

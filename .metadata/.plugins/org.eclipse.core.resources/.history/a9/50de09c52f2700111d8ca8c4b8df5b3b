@@ -1,5 +1,0 @@
-package ch.bbv.julklapp.persistence;
-
-public class PersistenceHelper {
-
-}

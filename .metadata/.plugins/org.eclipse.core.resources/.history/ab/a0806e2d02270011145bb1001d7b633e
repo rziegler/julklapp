@@ -1,7 +1,0 @@
-package ch.bbv.julklapp;
-
-import ServerResource;
-
-public class JulklappResource extends ServerResource {
-
-}

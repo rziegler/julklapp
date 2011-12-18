@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Move package &apos;ch.bbv.julklapp.core.dao&apos; to &apos;julklapp-gae/src&apos;&#x0D;&#x0A;- Original project: &apos;julklapp-core&apos;&#x0D;&#x0A;- Destination element: &apos;julklapp-gae/src&apos;&#x0D;&#x0A;- Original element: &apos;julklapp-core/src/main/java/ch.bbv.julklapp.core.dao&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move package" destination="=julklapp-gae/src" element1="/src\/main\/java&lt;ch.bbv.julklapp.core.dao" flags="589830" fragments="1" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.movePackages" stamp="1323959378898" version="1.0"/>
-</session>
