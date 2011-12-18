@@ -1,0 +1,5 @@
+# Ignore .metadata folder and all files in it
+.metadata/**/*
+
+# Ignore target folders
+**/target/**/*
