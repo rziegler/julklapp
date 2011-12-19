@@ -4,3 +4,9 @@
 
 # Ignore target folders
 **/target/**/*
+julklapp-gae/war/WEB-INF/classes/
+**/WEB-INF/classes/**/*
+
+# Ignore GAE database
+julklapp-gae/war/WEB-INF/appengine-generated/
+**/WEB-INF/appengine-generated/**/*

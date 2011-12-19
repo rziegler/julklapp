@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Key;
 
@@ -26,7 +25,7 @@ public class Member {
 	private String firstName;
 	
 	@Basic
-	private String email;
+	private Email email;
 	
 	@Basic
 	private String image;
@@ -51,11 +50,11 @@ public class Member {
 		this.firstName = firstName;
 	}
 
-	public String getEmail() {
+	public Email getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(Email email) {
 		this.email = email;
 	}
 

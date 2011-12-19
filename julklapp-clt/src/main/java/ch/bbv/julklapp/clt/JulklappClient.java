@@ -20,13 +20,13 @@ public class JulklappClient {
 		Client client = Client.create();
 		WebResource resource = client.resource("http://localhost:8888/");
 		
-//		Circle result = putCircle(resource, "second");
+//		CircleDto result = putCircle(resource, "second");
 		MemberDto member = new MemberDto();
 		member.setName("Kurmann");
 		member.setFirstName("Ueli");
-		member.setEmail(new Email("ueli.kurmann@bbv.ch"));
+		member.setEmail("ueli.kurmann@bbv.ch");
 		
-		System.out.println(member.getEmail().getEmail());
+		System.out.println(member.getEmail());
 		System.out.println(member.getEmail());
 		member.setImage("Ein Bildli...");
 		MemberDto resultM = putMember(resource, "second", member);

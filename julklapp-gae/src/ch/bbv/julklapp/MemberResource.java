@@ -12,7 +12,7 @@ import javax.xml.bind.JAXBElement;
 import ch.bbv.julklapp.core.dao.Circle;
 import ch.bbv.julklapp.core.dao.Member;
 import ch.bbv.julklapp.persistence.EMF;
-import ch.bbv.julklapp.persistence.PersistenceHelper;
+import ch.bbv.julklapp.persistence.PersistenceFacade;
 
 @Path("/members")
 public class MemberResource {

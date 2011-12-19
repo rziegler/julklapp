@@ -33,7 +33,14 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>com.google.appengine.eclipse.core.gaeNature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
+		<nature>com.google.appengine.eclipse.core.gaeNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>julklapp-core-java</name>
+			<type>2</type>
+			<location>C:/data/bbv/Projects/julklapp/julklapp-core/src/main/java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

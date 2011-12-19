@@ -15,147 +15,61 @@ import javax.xml.bind.JAXBElement;
 
 import ch.bbv.julklapp.core.dao.Circle;
 import ch.bbv.julklapp.core.dao.Member;
+import ch.bbv.julklapp.dto.CircleDto;
+import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.persistence.EMF;
-import ch.bbv.julklapp.persistence.PersistenceHelper;
+import ch.bbv.julklapp.persistence.PersistenceFacade;
 
 @Path("/circles")
 public class CircleResource {
 	
+	private PersistenceFacade facade;
+	
+	public CircleResource() {
+		facade = new PersistenceFacade(EMF.get().createEntityManager());
+	}
+	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{name}")
-	public Circle createCircle(@PathParam("name") String name, JAXBElement<Circle> circle) {
-		EntityManager em = EMF.get().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.persist(circle.getValue());
-			em.getTransaction().commit();
-		} finally {
-			em.close();
-		}
-		return circle.getValue();
+	public CircleDto createCircle(@PathParam("name") String name, JAXBElement<CircleDto> circle) {
+		return facade.createCircle(circle.getValue());
 	}
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{name}/delete")
-	public String deleteCircle(@PathParam("name") String name) {
-		StringBuilder builder = new StringBuilder();
-		EntityManager em = EMF.get().createEntityManager();
-		try {
-			Query query = em
-					.createQuery("SELECT c FROM Circle c WHERE c.name = '"
-							+ name + "'");
-			@SuppressWarnings("unchecked")
-			List<Circle> circles = query.getResultList();
-
-			if (circles.isEmpty()) {
-				builder.append("No circle found for " + name);
-			} else if (circles.size() > 1) {
-				builder.append("Multiple circles found for " + name);
-			} else {
-				em.getTransaction().begin();
-				Circle circle = circles.get(0);
-				em.remove(circle);
-				em.getTransaction().commit();
-				builder.append("Circle deleted " + circle.getKey() + ", " + name);
-			}
-		} finally {
-			em.close();
-		}
-		return builder.toString();
+	public CircleDto deleteCircle(@PathParam("name") String name) {
+		return facade.deleteCircleDto(name);
 	}
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/")
-	public String getCircles() {
-		StringBuilder builder = new StringBuilder();
-		EntityManager em = EMF.get().createEntityManager();
-		try {
-			Query query = em.createQuery("SELECT c FROM Circle c");
-			@SuppressWarnings("unchecked")
-			List<Circle> circles = query.getResultList();
-
-			if (circles.isEmpty()) {
-				builder.append("No circles yet.");
-			}
-			for (Circle c : circles) {
-				builder.append(c.getName());
-				builder.append(", ");
-			}
-		} finally {
-			em.close();
-		}
-		return builder.toString();
+	public List<CircleDto> getCircles() {
+		return facade.getCircleDtos();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{name}")
-	public Circle getCircle(@PathParam("name") String name) {
-		StringBuilder builder = new StringBuilder();
-		EntityManager em = EMF.get().createEntityManager();
-		try {
-			Query query = em
-					.createQuery("SELECT c FROM Circle c WHERE c.name = '"
-							+ name + "'");
-			@SuppressWarnings("unchecked")
-			List<Circle> circles = query.getResultList();
-
-			if (circles.isEmpty()) {
-				builder.append("No circle found for " + name);
-			} else if (circles.size() > 1) {
-				builder.append("Multiple circles found for " + name);
-			} else {
-				
-				Circle circle = circles.get(0);
-				for (Member m : circle.getMembers()) {
-					System.out.println(m.getFirstName());
-				}
-				return circle;
-			}
-		} finally {
-			em.close();
-		}
-		return null;
+	public CircleDto getCircle(@PathParam("name") String name) {
+		return facade.getCircleDtoByName(name);
 	}
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{circleName}/{memberName}")
-	public Member createMember(@PathParam("circleName") String circleName,@PathParam("memberName") String memberName, JAXBElement<Member> member) {
-		EntityManager em = EMF.get().createEntityManager();
-		try {
-			PersistenceHelper helper= new PersistenceHelper(em);
-			Circle circle = helper.getCircleByName(circleName);
-			circle.addMember(member.getValue());
-			em.getTransaction().begin();
-			em.persist(member.getValue());
-			em.persist(circle);
-			em.getTransaction().commit();
-		}catch(Exception e){
-			e.printStackTrace();
-			em.getTransaction().rollback();
-		} finally {
-			em.close();
-		}
-		return member.getValue();
+	public MemberDto createMember(@PathParam("circleName") String circleName,@PathParam("memberName") String memberName, JAXBElement<MemberDto> member) {
+		return facade.createMember(circleName, member.getValue());
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{circleName}/{memberName}")
-	public Member getMember(@PathParam("circleName") String circleName,@PathParam("memberName") String memberName) {
-		EntityManager em = EMF.get().createEntityManager();
-		try {
-			PersistenceHelper helper= new PersistenceHelper(em);
-			Member member = helper.getMemberInCircleByName(circleName, memberName);
-			return member;
-		} finally {
-			em.close();
-		}
+	public MemberDto getMember(@PathParam("circleName") String circleName,@PathParam("memberName") String memberName) {
+			return facade.getMemberDtoInCircleByName(circleName, memberName);
 	}
 }
