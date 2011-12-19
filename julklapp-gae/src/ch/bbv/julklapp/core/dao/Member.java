@@ -2,16 +2,16 @@ package ch.bbv.julklapp.core.dao;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.OneToOne;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Key;
 
 @Entity
-@XmlRootElement
 public class Member {
 	
 	@Id
@@ -25,10 +25,17 @@ public class Member {
 	private String firstName;
 	
 	@Basic
+	private String password;
+	
+	@Basic
 	private Email email;
 	
 	@Basic
 	private String image;
+	
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private Member wichteli;
 	
 	public Key getKey() {
 		return key;
@@ -64,6 +71,22 @@ public class Member {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+	
+	public Member getWichteli() {
+		return wichteli;
+	}
+	
+	public void setWichteli(Member wichteli) {
+		this.wichteli = wichteli;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

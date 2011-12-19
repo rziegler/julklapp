@@ -2,10 +2,9 @@ package ch.bbv.julklapp;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -13,11 +12,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBElement;
 
-import ch.bbv.julklapp.core.dao.Circle;
-import ch.bbv.julklapp.core.dao.Member;
 import ch.bbv.julklapp.dto.CircleDto;
+import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
+import ch.bbv.julklapp.dto.WichteliDto;
 import ch.bbv.julklapp.persistence.EMF;
+import ch.bbv.julklapp.persistence.PersistenceFacadeDatastore;
+import ch.bbv.julklapp.persistence.PersistenceFacadeJPA;
 import ch.bbv.julklapp.persistence.PersistenceFacade;
 
 @Path("/circles")
@@ -26,7 +27,7 @@ public class CircleResource {
 	private PersistenceFacade facade;
 	
 	public CircleResource() {
-		facade = new PersistenceFacade(EMF.get().createEntityManager());
+		facade = new PersistenceFacadeDatastore();
 	}
 	
 	@PUT
@@ -35,6 +36,22 @@ public class CircleResource {
 	@Path("/{name}")
 	public CircleDto createCircle(@PathParam("name") String name, JAXBElement<CircleDto> circle) {
 		return facade.createCircle(circle.getValue());
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/{name}/shuffle")
+	public String shuffle(@PathParam("name") String name) {
+		facade.shuffle(name);
+		return "HALLO";
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/{name}/{memberName}/wichteli")
+	public WichteliDto getWichteli(@PathParam("name") String name, @PathParam("memberName") String memberName, JAXBElement<CredentialsDto> credentials) {
+		return facade.getWichteli(name, memberName, credentials.getValue());
 	}
 
 	@GET
