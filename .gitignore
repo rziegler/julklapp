@@ -6,6 +6,7 @@
 **/target/**/*
 julklapp-gae/war/WEB-INF/classes/
 **/WEB-INF/classes/**/*
+julklapp-android/bin/**/*
 
 # Ignore GAE database
 julklapp-gae/war/WEB-INF/appengine-generated/
