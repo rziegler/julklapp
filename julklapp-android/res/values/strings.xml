@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, JulklappActivity!</string>
-    <string name="app_name">Julklapp-android</string>
+    <string name="hello">Hello</string>
+    <string name="app_name">Julklapp</string>
 
 </resources>
