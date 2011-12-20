@@ -38,9 +38,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>julklapp-core-java</name>
+			<name>core</name>
 			<type>2</type>
-			<location>C:/data/bbv/Projects/julklapp/julklapp-core/src/main/java</location>
+			<location>C:/Users/UeliKurmann/git/julklapp/julklapp-core/src/main/java</location>
 		</link>
 	</linkedResources>
 </projectDescription>
