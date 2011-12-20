@@ -1,13 +1,20 @@
 package ch.bbv.julklapp.persistence;
 
+import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToCircleDto;
+import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToMemberDto;
+import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToWichtelDto;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import ch.bbv.julklapp.dto.CircleDto;
 import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
+import ch.bbv.julklapp.password.CharPasswordGenerator;
+import ch.bbv.julklapp.password.PasswordGenerator;
 import ch.bbv.julklapp.shuffle.RuthsAlgorithm;
 import ch.bbv.julklapp.shuffle.Shuffler;
 
@@ -21,20 +28,13 @@ import com.google.appengine.api.datastore.Query;
 
 public class PersistenceFacadeDatastore implements PersistenceFacade {
 
-	private DatastoreService datastore;
-	private Object entity;
+	private static final Logger log = Logger.getLogger(PersistenceFacadeDatastore.class.getName());
+	private final DatastoreService datastore;
 
 	public PersistenceFacadeDatastore() {
 		datastore = DatastoreServiceFactory.getDatastoreService();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ch.bbv.julklapp.persistence.PersistenceFacadeIf#getCircleDtoByName(java
-	 * .lang.String)
-	 */
 	@Override
 	public CircleDto getCircleDtoByName(String circleName) {
 		Entity entity = getCircleByName(circleName);
@@ -49,16 +49,8 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		return pq.asSingleEntity();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ch.bbv.julklapp.persistence.PersistenceFacadeIf#getMemberDtoInCircleByName
-	 * (java.lang.String, java.lang.String)
-	 */
 	@Override
-	public MemberDto getMemberDtoInCircleByName(String circleName,
-			String memberName) {
+	public MemberDto getMemberDtoInCircleByName(String circleName, String memberName) {
 		Entity entity = getMemberInCircleByName(circleName, memberName);
 		return entityToMemberDto(entity);
 	}
@@ -67,21 +59,13 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		Entity circleEntity = getCircleByName(circleName);
 
 		Query q = new Query("Member");
-		q.addFilter("circleKey", Query.FilterOperator.EQUAL,
-				circleEntity.getKey());
+		q.addFilter("circleKey", Query.FilterOperator.EQUAL, circleEntity.getKey());
 		q.addFilter("firstName", Query.FilterOperator.EQUAL, memberName);
 
 		PreparedQuery pq = datastore.prepare(q);
 		return pq.asSingleEntity();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ch.bbv.julklapp.persistence.PersistenceFacadeIf#createCircle(ch.bbv.julklapp
-	 * .dto.CircleDto)
-	 */
 	@Override
 	public CircleDto createCircle(CircleDto circleDto) {
 		Entity circle = new Entity("Circle");
@@ -90,13 +74,6 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		return circleDto;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ch.bbv.julklapp.persistence.PersistenceFacadeIf#createMember(java.lang
-	 * .String, ch.bbv.julklapp.dto.MemberDto)
-	 */
 	@Override
 	public MemberDto createMember(String circleName, MemberDto memberDto) {
 		Entity circleEntity = getCircleByName(circleName);
@@ -112,11 +89,6 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		return memberDto;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#getCircleDtos()
-	 */
 	@Override
 	public List<CircleDto> getCircleDtos() {
 		List<CircleDto> result = new ArrayList<CircleDto>();
@@ -129,13 +101,6 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ch.bbv.julklapp.persistence.PersistenceFacadeIf#deleteCircleDto(java.
-	 * lang.String)
-	 */
 	@Override
 	public CircleDto deleteCircleDto(String name) {
 		Entity circleEntity = getCircleByName(name);
@@ -143,25 +108,24 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		return entityToCircleDto(circleEntity);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ch.bbv.julklapp.persistence.PersistenceFacadeIf#shuffle(java.lang.String)
-	 */
 	@Override
 	public void shuffle(String name) {
 		Entity circleEntity = getCircleByName(name);
 		List<Entity> membersOfCircle = getMembersOfCircle(circleEntity.getKey());
 
 		Shuffler<Entity> shuffler = new RuthsAlgorithm<Entity>();
+		PasswordGenerator generator = new CharPasswordGenerator();
 
-		List<Entry<Entity, Entity>> shuffles = shuffler
-				.shuffle(membersOfCircle);
+		List<Entry<Entity, Entity>> shuffles = shuffler.shuffle(membersOfCircle);
 		for (Entry<Entity, Entity> entry : shuffles) {
 			Entity member = entry.getKey();
 			Entity wichteli = entry.getValue();
-			member.setProperty("password", "test123");
+			String password = generator.generatePassword();
+
+			log.info(String.format("Member %s -> Wichteli %s [%s]", member.getProperty("firstName"),
+					wichteli.getProperty("firstName"), password));
+
+			member.setProperty("password", password);
 			member.setProperty("wichteliKey", wichteli.getKey());
 			datastore.put(member);
 		}
@@ -174,59 +138,23 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		return pq.asList(FetchOptions.Builder.withDefaults());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ch.bbv.julklapp.persistence.PersistenceFacadeIf#getWichteli(java.lang
-	 * .String, java.lang.String, ch.bbv.julklapp.dto.CredentialsDto)
-	 */
 	@Override
-	public WichteliDto getWichteli(String name, String memberName,
-			CredentialsDto value) {
+	public WichteliDto getWichteli(String name, String memberName, CredentialsDto credentials) {
 		Entity member = getMemberInCircleByName(name, memberName);
 
-		if (member.getProperty("password").equals(value.getPassword())
-				&& member.getProperty("email").equals(value.getUsername())) {
-
-			Entity wichteli = getWichteli((Key) member
-					.getProperty("wichteliKey"));
-
-			WichteliDto result = entityToWichtelDto(wichteli); 
-
+		if (member.getProperty("password").equals(credentials.getPassword())
+				&& member.getProperty("email").equals(credentials.getUsername())) {
+			Entity wichteli = getWichteli((Key) member.getProperty("wichteliKey"));
+			WichteliDto result = entityToWichtelDto(wichteli);
 			return result;
 		}
 		throw new IllegalStateException("Invalid credentials.");
 	}
 
-	private WichteliDto entityToWichtelDto(Entity entity) {
-		WichteliDto result = new WichteliDto(
-				(String) entity.getProperty("firstName"),
-				(String) entity.getProperty("name"));
-		return result;
-	}
-
 	private Entity getWichteli(Key key) {
 		Query q = new Query();
-		q.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL,
-				key);
+		q.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, key);
 		PreparedQuery pq = datastore.prepare(q);
 		return pq.asSingleEntity();
 	}
-
-	private CircleDto entityToCircleDto(Entity entity) {
-		CircleDto result = new CircleDto();
-		result.setName((String) entity.getProperty("name"));
-		return result;
-	}
-
-	private MemberDto entityToMemberDto(Entity entity) {
-		MemberDto result = new MemberDto();
-		result.setFirstName((String) entity.getProperty("firstName"));
-		result.setName((String) entity.getProperty("name"));
-		result.setEmail((String) entity.getProperty("email"));
-		result.setImage((String) entity.getProperty("image"));
-		return result;
-	}
-
 }

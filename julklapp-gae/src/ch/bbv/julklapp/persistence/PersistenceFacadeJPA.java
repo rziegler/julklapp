@@ -29,9 +29,6 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		memberTransformer = new MemberTransformer();
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#getCircleDtoByName(java.lang.String)
-	 */
 	@Override
 	public CircleDto getCircleDtoByName(String circleName) {
 		return circleTransformer.unmarshal(getCircleByName(circleName, false));
@@ -60,9 +57,6 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#getMemberDtoInCircleByName(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public MemberDto getMemberDtoInCircleByName(String circleName,
 			String memberName) {
@@ -83,9 +77,6 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#createCircle(ch.bbv.julklapp.dto.CircleDto)
-	 */
 	@Override
 	public CircleDto createCircle(CircleDto circleDto) {
 		entityManager.getTransaction().begin();
@@ -95,9 +86,6 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		return circleDto;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#createMember(java.lang.String, ch.bbv.julklapp.dto.MemberDto)
-	 */
 	@Override
 	public MemberDto createMember(String circleName, MemberDto memberDto) {
 		try {
@@ -115,9 +103,6 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		return memberDto;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#getCircleDtos()
-	 */
 	@Override
 	public List<CircleDto> getCircleDtos() {
 		List<CircleDto> result = new ArrayList<CircleDto>();
@@ -132,9 +117,6 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#deleteCircleDto(java.lang.String)
-	 */
 	@Override
 	public CircleDto deleteCircleDto(String name) {
 		Circle deletedCircle;
@@ -156,32 +138,27 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#shuffle(java.lang.String)
-	 */
 	@Override
 	public void shuffle(String name) {
 		entityManager.getTransaction().begin();
 		Circle circle = getCircleByName(name, true);
 		Shuffler shuffler = new RuthsAlgorithm();
-		//DEV-woRuthGradDranIst shuffler.shuffle(circle);
+		// DEV-woRuthGradDranIst shuffler.shuffle(circle);
 		for (Member member : circle.getMembers()) {
 			entityManager.persist(member);
 		}
-		//entityManager.persist(circle);
+		// entityManager.persist(circle);
 		entityManager.getTransaction().commit();
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.bbv.julklapp.persistence.PersistenceFacadeIf#getWichteli(java.lang.String, java.lang.String, ch.bbv.julklapp.dto.CredentialsDto)
-	 */
 	@Override
 	public WichteliDto getWichteli(String name, String memberName,
 			CredentialsDto value) {
 		Member member = getMemberInCircleByName(name, memberName);
 		if (member.getPassword().equals(value.getPassword())
 				&& member.getEmail().equals(value.getUsername())) {
-			WichteliDto result = new WichteliDto(member.getWichteli().getFirstName(), member.getWichteli().getName());
+			WichteliDto result = new WichteliDto(member.getWichteli()
+					.getFirstName(), member.getWichteli().getName());
 			return result;
 		}
 		throw new IllegalStateException("Invalid credentials.");

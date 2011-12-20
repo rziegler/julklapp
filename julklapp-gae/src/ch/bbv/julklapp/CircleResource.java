@@ -16,10 +16,8 @@ import ch.bbv.julklapp.dto.CircleDto;
 import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
-import ch.bbv.julklapp.persistence.EMF;
-import ch.bbv.julklapp.persistence.PersistenceFacadeDatastore;
-import ch.bbv.julklapp.persistence.PersistenceFacadeJPA;
 import ch.bbv.julklapp.persistence.PersistenceFacade;
+import ch.bbv.julklapp.persistence.PersistenceFacadeDatastore;
 
 @Path("/circles")
 public class CircleResource {

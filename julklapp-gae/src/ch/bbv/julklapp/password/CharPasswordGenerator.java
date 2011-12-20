@@ -2,7 +2,7 @@ package ch.bbv.julklapp.password;
 
 import java.util.Random;
 
-public class PasswordGeneratorImpl implements PasswordGenerator{
+public class CharPasswordGenerator implements PasswordGenerator{
 	
 	public String generatePassword(){
 		Random random = new Random();
