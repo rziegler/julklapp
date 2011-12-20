@@ -1,5 +1,7 @@
 package ch.bbv.julklapp.android;
 
+import ch.bbv.julklapp.android.config.Config;
+import ch.bbv.julklapp.android.rs.ClientFacade;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +30,12 @@ public class CreateCircleActivity extends Activity implements OnClickListener {
 		String circleName = circleNameField.getText().toString();
 		Intent intent = new Intent(getBaseContext(), AddMemberActivity.class);
 		intent.putExtra("circleName", circleName);
+		
+		ClientFacade facade = new ClientFacade(Config.URL);
+		
+		facade.putCircle(circleName);
+		
+		
 		startActivity(intent);
 	}
 
