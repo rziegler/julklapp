@@ -72,7 +72,7 @@ public class JulklappClient {
 
 	public void queryWichteliForFirstCircle() {
 		WichteliDto w1 = queryWichteli(CIRCLE_FIRST, ueli, "isnwwqye");
-		WichteliDto w2 = queryWichteli(CIRCLE_FIRST, ruth, "amawpwurr");
+		WichteliDto w2 = queryWichteli(CIRCLE_FIRST, ruth, "pbzpibcl");
 	}
 
 	public void queryWichteliForSecondCircle() {

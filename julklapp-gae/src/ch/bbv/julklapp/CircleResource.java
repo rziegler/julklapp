@@ -21,13 +21,13 @@ import ch.bbv.julklapp.persistence.PersistenceFacadeDatastore;
 
 @Path("/circles")
 public class CircleResource {
-	
-	private PersistenceFacade facade;
-	
+
+	private final PersistenceFacade facade;
+
 	public CircleResource() {
 		facade = new PersistenceFacadeDatastore();
 	}
-	
+
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -35,20 +35,22 @@ public class CircleResource {
 	public CircleDto createCircle(@PathParam("name") String name, JAXBElement<CircleDto> circle) {
 		return facade.createCircle(circle.getValue());
 	}
-	
+
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("/{name}/shuffle")
 	public String shuffle(@PathParam("name") String name) {
 		facade.shuffle(name);
+		facade.notify(name);
 		return "HALLO";
 	}
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{name}/{memberName}/wichteli")
-	public WichteliDto getWichteli(@PathParam("name") String name, @PathParam("memberName") String memberName, JAXBElement<CredentialsDto> credentials) {
+	public WichteliDto getWichteli(@PathParam("name") String name, @PathParam("memberName") String memberName,
+			JAXBElement<CredentialsDto> credentials) {
 		return facade.getWichteli(name, memberName, credentials.getValue());
 	}
 
@@ -65,26 +67,27 @@ public class CircleResource {
 	public List<CircleDto> getCircles() {
 		return facade.getCircleDtos();
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{name}")
 	public CircleDto getCircle(@PathParam("name") String name) {
 		return facade.getCircleDtoByName(name);
 	}
-	
+
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{circleName}/{memberName}")
-	public MemberDto createMember(@PathParam("circleName") String circleName,@PathParam("memberName") String memberName, JAXBElement<MemberDto> member) {
+	public MemberDto createMember(@PathParam("circleName") String circleName,
+			@PathParam("memberName") String memberName, JAXBElement<MemberDto> member) {
 		return facade.createMember(circleName, member.getValue());
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{circleName}/{memberName}")
-	public MemberDto getMember(@PathParam("circleName") String circleName,@PathParam("memberName") String memberName) {
-			return facade.getMemberDtoInCircleByName(circleName, memberName);
+	public MemberDto getMember(@PathParam("circleName") String circleName, @PathParam("memberName") String memberName) {
+		return facade.getMemberDtoInCircleByName(circleName, memberName);
 	}
 }

@@ -11,13 +11,11 @@ public interface PersistenceFacade {
 
 	CircleDto getCircleDtoByName(String circleName);
 
-	MemberDto getMemberDtoInCircleByName(String circleName,
-			String memberName);
+	MemberDto getMemberDtoInCircleByName(String circleName, String memberName);
 
 	CircleDto createCircle(CircleDto circleDto);
 
-	MemberDto createMember(String circleName,
-			MemberDto memberDto);
+	MemberDto createMember(String circleName, MemberDto memberDto);
 
 	List<CircleDto> getCircleDtos();
 
@@ -25,7 +23,7 @@ public interface PersistenceFacade {
 
 	void shuffle(String name);
 
-	WichteliDto getWichteli(String name, String memberName,
-			CredentialsDto value);
+	void notify(String name);
 
+	WichteliDto getWichteli(String name, String memberName, CredentialsDto value);
 }

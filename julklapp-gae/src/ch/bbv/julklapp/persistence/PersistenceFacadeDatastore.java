@@ -1,8 +1,9 @@
 package ch.bbv.julklapp.persistence;
 
 import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToCircleDto;
+import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToCredentialsDto;
 import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToMemberDto;
-import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToWichtelDto;
+import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToWichteliDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ import ch.bbv.julklapp.dto.CircleDto;
 import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
+import ch.bbv.julklapp.email.EmailNotifier;
+import ch.bbv.julklapp.email.GaeEmailNotifier;
 import ch.bbv.julklapp.password.CharPasswordGenerator;
 import ch.bbv.julklapp.password.PasswordGenerator;
 import ch.bbv.julklapp.shuffle.RuthsAlgorithm;
@@ -133,6 +136,29 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		}
 	}
 
+	@Override
+	public void notify(String name) {
+		Entity circleEntity = getCircleByName(name);
+		List<Entity> membersOfCircle = getMembersOfCircle(circleEntity.getKey());
+
+		EmailNotifier emailNotifier = new GaeEmailNotifier();
+
+		for (Entity memberEntity : membersOfCircle) {
+			Entity wichteli = getWichteli((Key) memberEntity.getProperty("wichteliKey"));
+
+			CircleDto circleDto = entityToCircleDto(circleEntity);
+			MemberDto memberDto = entityToMemberDto(memberEntity);
+			WichteliDto wichteliDto = entityToWichteliDto(wichteli);
+			CredentialsDto credentialsDto = entityToCredentialsDto(memberEntity);
+
+			try {
+				emailNotifier.sendEmail(circleDto, memberDto, wichteliDto, credentialsDto);
+			} catch (Exception e) {
+				log.error("Unable to notify member " + memberDto.getEmail(), e);
+			}
+		}
+	}
+
 	private List<Entity> getMembersOfCircle(Key circleKey) {
 		Query q = new Query("Member");
 		q.addFilter("circleKey", Query.FilterOperator.EQUAL, circleKey);
@@ -150,7 +176,7 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		boolean passwordEqual = password.equals(credentials.getPassword());
 		if (usernameEqual && passwordEqual) {
 			Entity wichteli = getWichteli((Key) member.getProperty("wichteliKey"));
-			WichteliDto result = entityToWichtelDto(wichteli);
+			WichteliDto result = entityToWichteliDto(wichteli);
 			return result;
 		}
 
