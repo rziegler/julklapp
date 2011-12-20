@@ -8,25 +8,34 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Was willst du tun?"
+        android:text="What do you want to do today?"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <RadioButton
-        android:id="@+id/radioButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create new circle" />
+    
 
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:id="@+id/WorkflowSelection"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Show all circles" />
+        android:orientation="vertical" >
 
-    <RadioButton
-        android:id="@+id/radioButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Solve" />
+        <RadioButton
+            android:id="@+id/createCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create new circle" />
+
+        <RadioButton
+            android:id="@+id/showCircles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show all circles" />
+
+        <RadioButton
+            android:id="@+id/solve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solve" />
+    </RadioGroup>
 
 </LinearLayout>
