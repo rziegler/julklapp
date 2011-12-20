@@ -22,13 +22,25 @@ public class JulklappClient {
 	private static final String CIRCLE_FIRST = "first";
 
 	private static final List<MemberDto> members = new ArrayList<MemberDto>();
+	private static final MemberDto ueli;
+	private static final MemberDto ruth;
+	private static final MemberDto lukas;
+	private static final MemberDto gabi;
+
 	private final String uri;
+	private final Client client;
+	private final WebResource resource;
 
 	static {
 		members.add(createMember("Ueli", "Kurmann", "ueli.kurmann@gmail.com", "bild.jpg"));
 		members.add(createMember("Ruth", "Ziegler", "ziegler.ruth@gmail.com", "bild.jpg"));
 		members.add(createMember("Lukas", "Weibel", "ueli.kurmann@bbv.ch", "bild.jpg"));
 		members.add(createMember("Gabi", "Gwinner", "ruth.ziegler@bbv.ch", "bild.jpg"));
+
+		ueli = members.get(0);
+		ruth = members.get(1);
+		lukas = members.get(2);
+		gabi = members.get(3);
 	}
 
 	private static MemberDto createMember(String firstName, String name, String email, String image) {
@@ -42,39 +54,47 @@ public class JulklappClient {
 
 	public JulklappClient(String uri) {
 		this.uri = uri;
+		client = Client.create();
+		resource = client.resource(uri);
 	}
 
-	public void run() {
-		Client client = Client.create();
-		WebResource resource = client.resource(uri);
+	public void initializeCirclesAndMembers() {
+		putCircle(CIRCLE_FIRST);
+		putCircle(CIRCLE_SECOND);
+		putCircle(CIRCLE_THIRD);
 
-		putCircle(resource, CIRCLE_FIRST);
-		putCircle(resource, CIRCLE_SECOND);
-		putCircle(resource, CIRCLE_THIRD);
-
-		initMembers(resource, CIRCLE_FIRST, 2);
-		initMembers(resource, CIRCLE_SECOND, 3);
-		initMembers(resource, CIRCLE_THIRD, 4);
-
-		// WichteliDto w1 = queryWichteli(resource, CIRCLE_SECOND, "Ueli",
-		// "ueli.kurmann@bbv.ch", "kdbiwrmr");
-		// WichteliDto w2 = queryWichteli(resource, CIRCLE_SECOND, "Ruth",
-		// "ruth.ziegler@bbv.ch", "fxgwnpon");
-		// WichteliDto w3 = queryWichteli(resource, CIRCLE_SECOND, "Gabi",
-		// "gabi.gwinner@bbv.ch", "whqjpcbi");
-		// WichteliDto w4 = queryWichteli(resource, CIRCLE_SECOND, "Lukas",
-		// "lukas.weibel@bbv.ch", "nthwyjaj");
+		initMembers(CIRCLE_FIRST, 2);
+		initMembers(CIRCLE_SECOND, 3);
+		initMembers(CIRCLE_THIRD, 4);
 
 		System.out.println("Done [" + resource.getURI().toString() + "]");
 	}
 
-	private void initMembers(WebResource resource, String circle, int numOfMembers) {
+	public void queryWichteliForFirstCircle() {
+		WichteliDto w1 = queryWichteli(CIRCLE_FIRST, ueli, "isnwwqye");
+		WichteliDto w2 = queryWichteli(CIRCLE_FIRST, ruth, "amawpwurr");
+	}
+
+	public void queryWichteliForSecondCircle() {
+		WichteliDto w1 = queryWichteli(CIRCLE_SECOND, ueli, "kdbiwrmr");
+		WichteliDto w2 = queryWichteli(CIRCLE_SECOND, ruth, "fxgwnpon");
+		WichteliDto w4 = queryWichteli(CIRCLE_SECOND, lukas, "nthwyjaj");
+	}
+
+	public void queryWichteliForThirdCircle() {
+		WichteliDto w1 = queryWichteli(CIRCLE_THIRD, ueli, "kdbiwrmr");
+		WichteliDto w2 = queryWichteli(CIRCLE_THIRD, ruth, "fxgwnpon");
+		WichteliDto w4 = queryWichteli(CIRCLE_THIRD, lukas, "nthwyjaj");
+		WichteliDto w3 = queryWichteli(CIRCLE_THIRD, gabi, "whqjpcbi");
+	}
+
+	private void initMembers(String circle, int numOfMembers) {
 		for (int i = 0; i < numOfMembers; i++) {
 			putMember(resource, circle, members.get(i % members.size()));
 		}
 	}
 
-	private CircleDto putCircle(WebResource resource, String name) {
+	private CircleDto putCircle(String name) {
 		WebResource resourceWithPath = resource.path("/circles/" + name);
 
 		Builder builder = resourceWithPath.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
@@ -92,17 +112,17 @@ public class JulklappClient {
 		return result;
 	}
 
-	private WichteliDto queryWichteli(WebResource resource, String circle, String name, String email, String password) {
-		WebResource resourceWithPath = resource.path("/circles/" + circle + "/" + name + "/wichteli");
+	private WichteliDto queryWichteli(String circle, MemberDto member, String password) {
+		WebResource resourceWithPath = resource.path("/circles/" + circle + "/" + member.getFirstName() + "/wichteli");
 
 		CredentialsDto cred = new CredentialsDto();
-		cred.setUsername(email);
+		cred.setUsername(member.getEmail());
 		cred.setPassword(password);
 
 		Builder builder = resourceWithPath.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		WichteliDto result = builder.post(WichteliDto.class, cred);
 
-		System.out.println("Wichteli of " + name + " is " + result.getFirstname());
+		System.out.println("Wichteli of " + member.getFirstName() + " is " + result.getFirstname());
 		return result;
 	}
 }
