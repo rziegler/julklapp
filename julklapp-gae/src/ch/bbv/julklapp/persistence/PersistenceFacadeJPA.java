@@ -152,4 +152,10 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 		throw new IllegalStateException("Invalid credentials.");
 	}
 
+	@Override
+	public void notify(String name) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

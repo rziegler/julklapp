@@ -1,18 +1,23 @@
 package ch.bbv.julklapp.persistence;
 
 import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToCircleDto;
+import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToCredentialsDto;
 import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToMemberDto;
-import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToWichtelDto;
+import static ch.bbv.julklapp.persistence.DatastoreHelper.entityToWichteliDto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ch.bbv.julklapp.dto.CircleDto;
 import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
+import ch.bbv.julklapp.email.EmailNotifier;
+import ch.bbv.julklapp.email.GaeEmailNotifier;
 import ch.bbv.julklapp.password.CharPasswordGenerator;
 import ch.bbv.julklapp.password.PasswordGenerator;
 import ch.bbv.julklapp.shuffle.RuthsAlgorithm;
@@ -28,7 +33,7 @@ import com.google.appengine.api.datastore.Query;
 
 public class PersistenceFacadeDatastore implements PersistenceFacade {
 
-	private static final Logger log = Logger.getLogger(PersistenceFacadeDatastore.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(PersistenceFacadeDatastore.class);
 	private final DatastoreService datastore;
 
 	public PersistenceFacadeDatastore() {
@@ -137,6 +142,29 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		}
 	}
 
+	@Override
+	public void notify(String name) {
+		Entity circleEntity = getCircleByName(name);
+		List<Entity> membersOfCircle = getMembersOfCircle(circleEntity.getKey());
+
+		EmailNotifier emailNotifier = new GaeEmailNotifier();
+
+		for (Entity memberEntity : membersOfCircle) {
+			Entity wichteli = getWichteli((Key) memberEntity.getProperty("wichteliKey"));
+
+			CircleDto circleDto = entityToCircleDto(circleEntity);
+			MemberDto memberDto = entityToMemberDto(memberEntity);
+			WichteliDto wichteliDto = entityToWichteliDto(wichteli);
+			CredentialsDto credentialsDto = entityToCredentialsDto(memberEntity);
+
+			try {
+				emailNotifier.sendEmail(circleDto, memberDto, wichteliDto, credentialsDto);
+			} catch (Exception e) {
+				log.error("Unable to notify member " + memberDto.getEmail(), e);
+			}
+		}
+	}
+
 	private List<Entity> getMembersOfCircle(Key circleKey) {
 		Query q = new Query("Member");
 		q.addFilter("circleKey", Query.FilterOperator.EQUAL, circleKey);
@@ -148,12 +176,26 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 	public WichteliDto getWichteli(String name, String memberName, CredentialsDto credentials) {
 		Entity member = getMemberInCircleByName(name, memberName);
 
-		if (member.getProperty("password").equals(credentials.getPassword())
-				&& member.getProperty("email").equals(credentials.getUsername())) {
+		String password = (String) member.getProperty("password");
+		String username = (String) member.getProperty("email");
+
+		boolean usernameEqual = username.equals(credentials.getUsername());
+		boolean passwordEqual = password.equals(credentials.getPassword());
+		if (usernameEqual && passwordEqual) {
 			Entity wichteli = getWichteli((Key) member.getProperty("wichteliKey"));
-			WichteliDto result = entityToWichtelDto(wichteli);
+			WichteliDto result = entityToWichteliDto(wichteli);
 			return result;
 		}
+
+		String msg;
+		if (!usernameEqual) {
+			msg = String
+					.format("Username not equal. Expected '%s', but was '%s'.", username, credentials.getUsername());
+		} else {
+			msg = String
+					.format("Password not equal. Expected '%s', but was '%s'.", password, credentials.getPassword());
+		}
+		log.debug(msg);
 		throw new IllegalStateException("Invalid credentials.");
 	}
 

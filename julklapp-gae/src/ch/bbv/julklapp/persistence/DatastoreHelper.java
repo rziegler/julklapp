@@ -1,6 +1,7 @@
 package ch.bbv.julklapp.persistence;
 
 import ch.bbv.julklapp.dto.CircleDto;
+import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
 
@@ -23,10 +24,18 @@ class DatastoreHelper {
 		return result;
 	}
 
-	static WichteliDto entityToWichtelDto(Entity entity) {
+	static WichteliDto entityToWichteliDto(Entity entity) {
 		String firstName = (String) entity.getProperty("firstName");
 		String name = (String) entity.getProperty("name");
 		WichteliDto result = new WichteliDto(firstName, name);
+		return result;
+	}
+
+	static CredentialsDto entityToCredentialsDto(Entity entity) {
+		CredentialsDto result = new CredentialsDto();
+
+		result.setUsername((String) entity.getProperty("email"));
+		result.setPassword((String) entity.getProperty("password"));
 		return result;
 	}
 }
