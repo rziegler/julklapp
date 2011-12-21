@@ -41,6 +41,7 @@ public class CircleResource {
 	@Path("/{name}/shuffle")
 	public String shuffle(@PathParam("name") String name) {
 		facade.shuffle(name);
+		facade.notify(name);
 		return "HALLO";
 	}
 	

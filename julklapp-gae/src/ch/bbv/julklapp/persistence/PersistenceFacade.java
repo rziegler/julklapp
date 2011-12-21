@@ -25,6 +25,7 @@ public interface PersistenceFacade {
 
 	void shuffle(String name);
 
+	void notify(String name);
 	WichteliDto getWichteli(String name, String memberName,
 			CredentialsDto value);
 
