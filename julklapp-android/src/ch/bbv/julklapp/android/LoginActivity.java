@@ -2,22 +2,17 @@ package ch.bbv.julklapp.android;
 
 import java.util.List;
 
-import ch.bbv.julklapp.android.config.Config;
-import ch.bbv.julklapp.android.rs.ClientFacade;
-import ch.bbv.julklapp.dto.CircleDto;
-import ch.bbv.julklapp.dto.MemberDto;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
+import ch.bbv.julklapp.android.config.Config;
+import ch.bbv.julklapp.android.rs.ClientFacade;
+import ch.bbv.julklapp.dto.CircleDto;
 
 public class LoginActivity extends Activity implements OnClickListener  {
    
@@ -49,6 +44,10 @@ public class LoginActivity extends Activity implements OnClickListener  {
 	@Override
 	public void onClick(View button) {
 		ClientFacade facade = new ClientFacade(Config.URL);	
+		String usernameString = username.getText().toString();
+		String passwordString = password.getText().toString();
+		CircleDto circle = (CircleDto) spinner.getSelectedItem();
+		facade.queryWichetli(circle.getName(), usernameString, passwordString);
 	}
 
 	private List<CircleDto> getCircles() {
