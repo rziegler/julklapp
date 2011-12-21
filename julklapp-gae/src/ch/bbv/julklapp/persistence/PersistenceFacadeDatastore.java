@@ -37,8 +37,14 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 
 	@Override
 	public CircleDto getCircleDtoByName(String circleName) {
-		Entity entity = getCircleByName(circleName);
-		return entityToCircleDto(entity);
+		Entity circleEntity = getCircleByName(circleName);
+		CircleDto circleDto = entityToCircleDto(circleEntity);
+
+		List<Entity> memberEntities = getMembersOfCircle(circleEntity.getKey());
+		for (Entity memberEntity : memberEntities) {
+			circleDto.addMember(entityToMemberDto(memberEntity));
+		}
+		return circleDto;
 	}
 
 	private Entity getCircleByName(String circleName) {

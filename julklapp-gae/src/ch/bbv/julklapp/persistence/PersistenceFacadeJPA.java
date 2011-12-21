@@ -14,8 +14,6 @@ import ch.bbv.julklapp.dto.CircleDto;
 import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
-import ch.bbv.julklapp.shuffle.RuthsAlgorithm;
-import ch.bbv.julklapp.shuffle.Shuffler;
 
 public class PersistenceFacadeJPA implements PersistenceFacade {
 
@@ -35,17 +33,14 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 	}
 
 	private Circle getCircleByName(String circleName, boolean loadMembers) {
-		Query query = entityManager
-				.createQuery("SELECT c FROM Circle c WHERE c.name = '"
-						+ circleName + "'");
+		Query query = entityManager.createQuery("SELECT c FROM Circle c WHERE c.name = '" + circleName + "'");
 		@SuppressWarnings("unchecked")
 		List<Circle> circles = query.getResultList();
 
 		if (circles.isEmpty()) {
 			return null;
 		} else if (circles.size() > 1) {
-			throw new IllegalStateException(
-					"result must contain exaclty one element.");
+			throw new IllegalStateException("result must contain exaclty one element.");
 		} else {
 			Circle circle = circles.get(0);
 			if (loadMembers) { // lazily load all member
@@ -58,10 +53,8 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 	}
 
 	@Override
-	public MemberDto getMemberDtoInCircleByName(String circleName,
-			String memberName) {
-		return memberTransformer.unmarshal(getMemberInCircleByName(circleName,
-				memberName));
+	public MemberDto getMemberDtoInCircleByName(String circleName, String memberName) {
+		return memberTransformer.unmarshal(getMemberInCircleByName(circleName, memberName));
 	}
 
 	private Member getMemberInCircleByName(String circleName, String memberName) {
@@ -121,9 +114,7 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 	public CircleDto deleteCircleDto(String name) {
 		Circle deletedCircle;
 
-		Query query = entityManager
-				.createQuery("SELECT c FROM Circle c WHERE c.name = '" + name
-						+ "'");
+		Query query = entityManager.createQuery("SELECT c FROM Circle c WHERE c.name = '" + name + "'");
 		@SuppressWarnings("unchecked")
 		List<Circle> circles = query.getResultList();
 
@@ -142,7 +133,7 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 	public void shuffle(String name) {
 		entityManager.getTransaction().begin();
 		Circle circle = getCircleByName(name, true);
-		Shuffler shuffler = new RuthsAlgorithm();
+		// Shuffler shuffler = new RuthsAlgorithm();
 		// DEV-woRuthGradDranIst shuffler.shuffle(circle);
 		for (Member member : circle.getMembers()) {
 			entityManager.persist(member);
@@ -152,13 +143,10 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 	}
 
 	@Override
-	public WichteliDto getWichteli(String name, String memberName,
-			CredentialsDto value) {
+	public WichteliDto getWichteli(String name, String memberName, CredentialsDto value) {
 		Member member = getMemberInCircleByName(name, memberName);
-		if (member.getPassword().equals(value.getPassword())
-				&& member.getEmail().equals(value.getUsername())) {
-			WichteliDto result = new WichteliDto(member.getWichteli()
-					.getFirstName(), member.getWichteli().getName());
+		if (member.getPassword().equals(value.getPassword()) && member.getEmail().equals(value.getUsername())) {
+			WichteliDto result = new WichteliDto(member.getWichteli().getFirstName(), member.getWichteli().getName());
 			return result;
 		}
 		throw new IllegalStateException("Invalid credentials.");
