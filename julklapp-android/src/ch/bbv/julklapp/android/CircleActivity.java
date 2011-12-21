@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import ch.bbv.julklapp.android.config.Config;
@@ -22,8 +21,7 @@ public class CircleActivity extends Activity implements OnClickListener  {
 	
 	private TextView titleField;
 
-	private Button exitButton;
-	private Button shuffleButton;
+	
 
 	/** Called when the activity is first created. */
     @Override
