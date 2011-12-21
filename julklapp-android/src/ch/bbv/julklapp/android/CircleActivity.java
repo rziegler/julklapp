@@ -42,7 +42,7 @@ public class CircleActivity extends Activity implements OnClickListener  {
 	private List<MemberDto> getMembers() {
 		ClientFacade facade = new ClientFacade(Config.URL);
 		CircleDto circle = facade.getCircle(getCircleName());
-		return circle.getMemberList();
+		return circle.getMemberList().getMember();
 	}
 
 	private String getCircleName() {

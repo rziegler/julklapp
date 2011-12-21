@@ -14,7 +14,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int WorkflowSelection=0x7f050018;
+        public static final int WorkflowSelection=0x7f050019;
         public static final int addMemberButtonAdd=0x7f050008;
         public static final int addMemberButtonFinish=0x7f050009;
         public static final int addMemberEditEmail=0x7f050006;
@@ -24,20 +24,21 @@ public final class R {
         public static final int addMemberTextFirstname=0x7f050001;
         public static final int addMemberTextName=0x7f050003;
         public static final int addMemberTitle=0x7f050000;
-        public static final int button1=0x7f05000c;
-        public static final int button2=0x7f05000d;
+        public static final int button1=0x7f050018;
+        public static final int circleButtonFinish=0x7f05000d;
+        public static final int circleButtonShuffle=0x7f05000c;
         public static final int circleMemberList=0x7f05000b;
         public static final int circleNameField=0x7f050011;
         public static final int circleTitle=0x7f05000a;
         public static final int circlesListView=0x7f05000f;
-        public static final int createCircle=0x7f050019;
+        public static final int createCircle=0x7f05001a;
         public static final int createCircleButton=0x7f050012;
         public static final int linearLayout1=0x7f050007;
         public static final int loginPassword=0x7f050017;
         public static final int loginSpinner=0x7f050013;
         public static final int loginUsername=0x7f050015;
-        public static final int showCircles=0x7f05001a;
-        public static final int solve=0x7f05001b;
+        public static final int showCircles=0x7f05001b;
+        public static final int solve=0x7f05001c;
         public static final int textView1=0x7f05000e;
         public static final int textView2=0x7f050010;
         public static final int textView3=0x7f050014;

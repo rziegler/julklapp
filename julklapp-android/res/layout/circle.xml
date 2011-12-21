@@ -23,13 +23,13 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/circleButtonShuffle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Shuffle" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/circleButtonFinish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Exit" />
