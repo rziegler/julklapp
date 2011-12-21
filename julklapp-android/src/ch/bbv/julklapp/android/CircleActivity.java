@@ -36,8 +36,8 @@ public class CircleActivity extends Activity implements OnClickListener  {
         
         Button shuffleButton = (Button)findViewById(R.id.circleButtonShuffle);
         shuffleButton.setOnClickListener(this);
-        Button finsihButton = (Button)findViewById(R.id.circleButtonFinish);
-        finsihButton.setOnClickListener(this);
+        Button addButton = (Button)findViewById(R.id.circleButtonAddMember);
+        addButton.setOnClickListener(this);
         
         ListView memberList = (ListView)findViewById(R.id.circleMemberList);
         ArrayAdapter<MemberDto> arrayAdapter = new ArrayAdapter<MemberDto>(getBaseContext(), android.R.layout.simple_list_item_1, getMembers());
@@ -58,7 +58,7 @@ public class CircleActivity extends Activity implements OnClickListener  {
 	@Override
 	public void onClick(View button) {	
 		switch(button.getId()){
-		case R.id.circleButtonFinish:
+		case R.id.circleButtonAddMember:
 			finish();
 			break;
 		case R.id.circleButtonShuffle:

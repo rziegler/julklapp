@@ -24,8 +24,8 @@ public final class R {
         public static final int addMemberTextFirstname=0x7f050001;
         public static final int addMemberTextName=0x7f050003;
         public static final int addMemberTitle=0x7f050000;
-        public static final int circleButtonFinish=0x7f05000d;
-        public static final int circleButtonShuffle=0x7f05000c;
+        public static final int circleButtonAddMember=0x7f05000c;
+        public static final int circleButtonShuffle=0x7f05000d;
         public static final int circleMemberList=0x7f05000b;
         public static final int circleNameField=0x7f050011;
         public static final int circleTitle=0x7f05000a;
