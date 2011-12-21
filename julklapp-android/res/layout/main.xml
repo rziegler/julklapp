@@ -23,7 +23,7 @@
             android:id="@+id/createCircle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create new circle" />
+            android:text="Create a new circle" />
 
         <RadioButton
             android:id="@+id/showCircles"

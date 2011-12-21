@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class CreateCircleActivity extends Activity implements OnClickListener {
+	
+	private static final String TAG = CreateCircleActivity.class.getSimpleName();
+
 
 	private EditText circleNameField;
 	private Button nextButton;
@@ -29,13 +32,9 @@ public class CreateCircleActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		String circleName = circleNameField.getText().toString();
 		Intent intent = new Intent(getBaseContext(), AddMemberActivity.class);
-		intent.putExtra("circleName", circleName);
-		
+		intent.putExtra(Constants.EXTRA_CIRCLE_NAME, circleName);
 		ClientFacade facade = new ClientFacade(Config.URL);
-		
 		facade.putCircle(circleName);
-		
-		
 		startActivity(intent);
 	}
 

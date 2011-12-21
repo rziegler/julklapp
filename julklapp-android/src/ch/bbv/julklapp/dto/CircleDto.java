@@ -31,4 +31,9 @@ public class CircleDto {
 	public void addMember(MemberDto member) {
 		memberList.add(member);
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

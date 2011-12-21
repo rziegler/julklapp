@@ -1,14 +1,13 @@
 package ch.bbv.julklapp.dto;
 
-
 public class MemberDto {
-	
+
 	private String name;
-	
+
 	private String firstName;
-	
+
 	private String email;
-	
+
 	private String image;
 
 	public String getName() {
@@ -41,5 +40,10 @@ public class MemberDto {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	@Override
+	public String toString() {
+		return firstName + " " + name;
 	}
 }
