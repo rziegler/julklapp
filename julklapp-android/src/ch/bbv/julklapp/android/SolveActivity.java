@@ -18,7 +18,7 @@ public class SolveActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG,"Show wichtel.");
     	super.onCreate(savedInstanceState);
-        setContentView(R.layout.circle);
+        setContentView(R.layout.solve);
         
         titleField = (TextView)findViewById(R.id.solveWichtel);
         titleField.setText(titleField.getText()+getFirstName()+" "+getName());     

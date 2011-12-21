@@ -26,6 +26,8 @@ public class LoginActivity extends Activity implements OnClickListener  {
 	private EditText username;
 	private EditText password;
 
+	private EditText firstname;
+
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class LoginActivity extends Activity implements OnClickListener  {
         
         username = (EditText)findViewById(R.id.loginUsername);
         password = (EditText)findViewById(R.id.loginPassword);
+        firstname = (EditText)findViewById(R.id.loginFirstname);
         
         Button button = (Button)findViewById(R.id.loginSolveButton);
         button.setOnClickListener(this);
@@ -52,14 +55,15 @@ public class LoginActivity extends Activity implements OnClickListener  {
 		ClientFacade facade = new ClientFacade(Config.URL);	
 		String usernameString = username.getText().toString();
 		String passwordString = password.getText().toString();
+		String firstnameString = firstname.getText().toString();
 		CircleDto circle = (CircleDto) spinner.getSelectedItem();
-		WichteliDto wichteli = facade.queryWichetli(circle.getName(), usernameString, passwordString);
+		WichteliDto wichteli = facade.queryWichetli(circle.getName(), firstnameString, usernameString, passwordString);
 		if(wichteli != null){
-			Intent intent = new Intent(getBaseContext(), CircleActivity.class);
+			Intent intent = new Intent(getBaseContext(), SolveActivity.class);
 			intent.putExtra(Constants.EXTRA_WICHTELI_FIRSTNAME, wichteli.getFirstname());
 			intent.putExtra(Constants.EXTRA_WICHTELI_NAME, wichteli.getName());
-			finish();
 			startActivity(intent);	
+			finish();
 		}else{
 			password.getText().clear();
 		}

@@ -14,7 +14,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int WorkflowSelection=0x7f050019;
+        public static final int WorkflowSelection=0x7f05001b;
         public static final int addMemberButtonAdd=0x7f050008;
         public static final int addMemberButtonFinish=0x7f050009;
         public static final int addMemberEditEmail=0x7f050006;
@@ -30,21 +30,23 @@ public final class R {
         public static final int circleNameField=0x7f050011;
         public static final int circleTitle=0x7f05000a;
         public static final int circlesListView=0x7f05000f;
-        public static final int createCircle=0x7f05001a;
+        public static final int createCircle=0x7f05001c;
         public static final int createCircleButton=0x7f050012;
         public static final int linearLayout1=0x7f050007;
-        public static final int loginPassword=0x7f050017;
-        public static final int loginSolveButton=0x7f050018;
+        public static final int loginFirstname=0x7f050015;
+        public static final int loginPassword=0x7f050019;
+        public static final int loginSolveButton=0x7f05001a;
         public static final int loginSpinner=0x7f050013;
-        public static final int loginUsername=0x7f050015;
-        public static final int showCircles=0x7f05001b;
-        public static final int solve=0x7f05001c;
-        public static final int solveTitle=0x7f05001d;
-        public static final int solveWichtel=0x7f05001e;
+        public static final int loginUsername=0x7f050017;
+        public static final int showCircles=0x7f05001d;
+        public static final int solve=0x7f05001e;
+        public static final int solveTitle=0x7f05001f;
+        public static final int solveWichtel=0x7f050020;
         public static final int textView1=0x7f05000e;
         public static final int textView2=0x7f050010;
-        public static final int textView3=0x7f050014;
-        public static final int textView4=0x7f050016;
+        public static final int textView3=0x7f050016;
+        public static final int textView4=0x7f050018;
+        public static final int textView5=0x7f050014;
     }
     public static final class layout {
         public static final int add_member=0x7f030000;

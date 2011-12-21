@@ -68,13 +68,13 @@ public class ClientFacade {
 		resource.get();
 	}
 	
-	public WichteliDto queryWichetli(String circle, String username, String password) {
+	public WichteliDto queryWichetli(String circle, String firstname, String email, String password) {
 		Log.i(TAG, "Retrieve wichteli.");
-		ClientResource resource = new ClientResource(Config.URL +"/circles/" + circle + "/" + username + "/wichteli");
+		ClientResource resource = new ClientResource(Config.URL +"/circles/" + circle + "/" + firstname + "/wichteli");
 		resource.setProtocol(Protocol.HTTP);
 	
 		CredentialsDto cred = new CredentialsDto();
-		cred.setUsername(username);
+		cred.setUsername(email);
 		cred.setPassword(password);
 	
 		WichteliDto wichteli = resource.post(cred, WichteliDto.class);
