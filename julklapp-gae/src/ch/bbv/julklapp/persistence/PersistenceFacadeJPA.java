@@ -146,7 +146,8 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 	public WichteliDto getWichteli(String name, String memberName, CredentialsDto value) {
 		Member member = getMemberInCircleByName(name, memberName);
 		if (member.getPassword().equals(value.getPassword()) && member.getEmail().equals(value.getUsername())) {
-			WichteliDto result = new WichteliDto(member.getWichteli().getFirstName(), member.getWichteli().getName());
+			WichteliDto result = new WichteliDto(member.getWichteli().getFirstName(), member.getWichteli().getName(),
+					null);
 			return result;
 		}
 		throw new IllegalStateException("Invalid credentials.");
