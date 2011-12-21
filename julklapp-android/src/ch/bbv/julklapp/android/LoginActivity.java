@@ -3,16 +3,19 @@ package ch.bbv.julklapp.android;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import ch.bbv.julklapp.android.config.Config;
 import ch.bbv.julklapp.android.rs.ClientFacade;
 import ch.bbv.julklapp.dto.CircleDto;
+import ch.bbv.julklapp.dto.WichteliDto;
 
 public class LoginActivity extends Activity implements OnClickListener  {
    
@@ -37,6 +40,9 @@ public class LoginActivity extends Activity implements OnClickListener  {
         
         username = (EditText)findViewById(R.id.loginUsername);
         password = (EditText)findViewById(R.id.loginPassword);
+        
+        Button button = (Button)findViewById(R.id.loginSolveButton);
+        button.setOnClickListener(this);
        
         
     }
@@ -47,7 +53,16 @@ public class LoginActivity extends Activity implements OnClickListener  {
 		String usernameString = username.getText().toString();
 		String passwordString = password.getText().toString();
 		CircleDto circle = (CircleDto) spinner.getSelectedItem();
-		facade.queryWichetli(circle.getName(), usernameString, passwordString);
+		WichteliDto wichteli = facade.queryWichetli(circle.getName(), usernameString, passwordString);
+		if(wichteli != null){
+			Intent intent = new Intent(getBaseContext(), CircleActivity.class);
+			intent.putExtra(Constants.EXTRA_WICHTELI_FIRSTNAME, wichteli.getFirstname());
+			intent.putExtra(Constants.EXTRA_WICHTELI_NAME, wichteli.getName());
+			finish();
+			startActivity(intent);	
+		}else{
+			password.getText().clear();
+		}
 	}
 
 	private List<CircleDto> getCircles() {
