@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import ch.bbv.julklapp.android.config.Config;
@@ -33,6 +34,11 @@ public class CircleActivity extends Activity implements OnClickListener  {
         titleField = (TextView)findViewById(R.id.circleTitle);
         titleField.setText(titleField.getText()+" "+getCircleName());
         
+        Button shuffleButton = (Button)findViewById(R.id.circleButtonShuffle);
+        shuffleButton.setOnClickListener(this);
+        Button finsihButton = (Button)findViewById(R.id.circleButtonFinish);
+        finsihButton.setOnClickListener(this);
+        
         ListView memberList = (ListView)findViewById(R.id.circleMemberList);
         ArrayAdapter<MemberDto> arrayAdapter = new ArrayAdapter<MemberDto>(getBaseContext(), android.R.layout.simple_list_item_1, getMembers());
 		memberList.setAdapter(arrayAdapter);
@@ -51,6 +57,15 @@ public class CircleActivity extends Activity implements OnClickListener  {
 
 	@Override
 	public void onClick(View button) {	
-		
+		switch(button.getId()){
+		case R.id.circleButtonFinish:
+			finish();
+			break;
+		case R.id.circleButtonShuffle:
+			ClientFacade facade = new ClientFacade(Config.URL);
+			facade.shuffle(getCircleName());
+			button.setClickable(false);
+			break;
+		}
 	}
 }

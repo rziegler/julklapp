@@ -24,7 +24,6 @@ public final class R {
         public static final int addMemberTextFirstname=0x7f050001;
         public static final int addMemberTextName=0x7f050003;
         public static final int addMemberTitle=0x7f050000;
-        public static final int button1=0x7f050018;
         public static final int circleButtonFinish=0x7f05000d;
         public static final int circleButtonShuffle=0x7f05000c;
         public static final int circleMemberList=0x7f05000b;
@@ -35,10 +34,13 @@ public final class R {
         public static final int createCircleButton=0x7f050012;
         public static final int linearLayout1=0x7f050007;
         public static final int loginPassword=0x7f050017;
+        public static final int loginSolveButton=0x7f050018;
         public static final int loginSpinner=0x7f050013;
         public static final int loginUsername=0x7f050015;
         public static final int showCircles=0x7f05001b;
         public static final int solve=0x7f05001c;
+        public static final int solveTitle=0x7f05001d;
+        public static final int solveWichtel=0x7f05001e;
         public static final int textView1=0x7f05000e;
         public static final int textView2=0x7f050010;
         public static final int textView3=0x7f050014;
@@ -51,6 +53,7 @@ public final class R {
         public static final int create_circle=0x7f030003;
         public static final int login=0x7f030004;
         public static final int main=0x7f030005;
+        public static final int solve=0x7f030006;
     }
     public static final class string {
         public static final int app_name=0x7f040001;
