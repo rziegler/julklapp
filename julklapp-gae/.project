@@ -42,5 +42,10 @@
 			<type>2</type>
 			<location>C:/Users/UeliKurmann/git/julklapp/julklapp-core/src/main/java</location>
 		</link>
+		<link>
+			<name>julklapp-core-java</name>
+			<type>2</type>
+			<location>C:/data/bbv/Projects/julklapp/julklapp-core/src/main/java</location>
+		</link>
 	</linkedResources>
 </projectDescription>
