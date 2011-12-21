@@ -49,7 +49,7 @@ public class AddMemberActivity extends AbstractCircleActivity implements OnClick
 	@Override
 	public void onClick(final View button) {
 		
-		GenericJulklappTask.create(this, new Task<Void>(){
+		GenericJulklappTask.execute(this, new Task<Void>(){
 
 			@Override
 			public Void execute(ClientFacade facade) {
@@ -62,7 +62,7 @@ public class AddMemberActivity extends AbstractCircleActivity implements OnClick
 			public void callback(Void v) {
 				callbackAfterPuttingTheMember(button);	
 			}
-		}).execute();
+		});
 	}
 
 	private void callbackAfterPuttingTheMember(View button) {

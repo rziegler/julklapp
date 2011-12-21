@@ -35,7 +35,8 @@ public class GenericJulklappTask<Result> extends AsyncTask<Void, Integer, Result
 		task.callback(result);
 	}
 	
-	public  static <T> GenericJulklappTask<T> create(Context context, Task<T> task) {
-		return new GenericJulklappTask<T>(context, task);	
+	public  static <T> void execute(Context context, Task<T> task) {
+		GenericJulklappTask<T> result = new GenericJulklappTask<T>(context, task);
+		result.execute();
 	}
 }

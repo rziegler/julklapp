@@ -47,7 +47,7 @@ public class CircleActivity extends Activity implements OnClickListener {
 	}
 
 	private void initMemberList() {
-		GenericJulklappTask.create(this, new Task<List<MemberDto>>(){
+		GenericJulklappTask.execute(this, new Task<List<MemberDto>>(){
 
 			@Override
 			public List<MemberDto> execute(ClientFacade facade) {
@@ -59,7 +59,7 @@ public class CircleActivity extends Activity implements OnClickListener {
 			public void callback(List<MemberDto> result) {
 				initMemberListCallback(result);
 			}
-		}).execute();
+		});
 	}
 	
 	private void initMemberListCallback(List<MemberDto> members){
@@ -90,7 +90,7 @@ public class CircleActivity extends Activity implements OnClickListener {
 	}
 
 	private void shuffle(final View button) {
-		GenericJulklappTask.create(this, new Task<Void>(){
+		GenericJulklappTask.execute(this, new Task<Void>(){
 
 			@Override
 			public Void execute(ClientFacade facade) {
@@ -102,7 +102,7 @@ public class CircleActivity extends Activity implements OnClickListener {
 			public void callback(Void v) {
 				callbackAfterShuffle(button);
 			}
-		}).execute();
+		});
 	}
 	
 	private void callbackAfterShuffle(View button){

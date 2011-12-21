@@ -36,7 +36,7 @@ public class CreateCircleActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		final String circleName = circleNameField.getText().toString();
 		
-		GenericJulklappTask.create(this, new Task<CircleDto>(){
+		GenericJulklappTask.execute(this, new Task<CircleDto>(){
 
 			@Override
 			public CircleDto execute(ClientFacade facade) {
@@ -47,7 +47,7 @@ public class CreateCircleActivity extends Activity implements OnClickListener {
 			public void callback(CircleDto circle) {
 				callbackAfterCircleCreation(circle);	
 			}
-		}).execute();	
+		});	
 	}
 	
 	private void callbackAfterCircleCreation(CircleDto circle){

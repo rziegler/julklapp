@@ -31,7 +31,7 @@ public class CirclesActivity extends Activity implements OnItemClickListener  {
     }
     
     private void initCircleList() {
-		GenericJulklappTask.create(this, new Task<List<CircleDto>>(){
+		GenericJulklappTask.execute(this, new Task<List<CircleDto>>(){
 
 			@Override
 			public List<CircleDto> execute(ClientFacade facade) {
@@ -43,7 +43,7 @@ public class CirclesActivity extends Activity implements OnItemClickListener  {
 				initCircleListCallback(circles);
 			}
 			
-		}).execute();
+		});
 	}
 	
 	private void initCircleListCallback(List<CircleDto> circles){

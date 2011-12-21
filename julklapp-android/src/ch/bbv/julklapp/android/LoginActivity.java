@@ -47,7 +47,7 @@ public class LoginActivity extends Activity implements OnClickListener  {
     }
 
 	private void initCircleSpinner( ) {
-		GenericJulklappTask.create(this, new Task<List<CircleDto>>(){
+		GenericJulklappTask.execute(this, new Task<List<CircleDto>>(){
 
 			@Override
 			public List<CircleDto> execute(ClientFacade facade) {
@@ -59,8 +59,7 @@ public class LoginActivity extends Activity implements OnClickListener  {
 				callbackInitCircleSpinner(circles);
 			}
 			
-		}).execute();
-		
+		});
 	}
 	
 	private void callbackInitCircleSpinner(List<CircleDto> circles){
@@ -72,7 +71,7 @@ public class LoginActivity extends Activity implements OnClickListener  {
 	public void onClick(View button) {
 		
 		
-		GenericJulklappTask.create(this, new Task<WichteliDto>(){
+		GenericJulklappTask.execute(this, new Task<WichteliDto>(){
 
 			@Override
 			public WichteliDto execute(ClientFacade facade) {
@@ -87,7 +86,7 @@ public class LoginActivity extends Activity implements OnClickListener  {
 			public void callback(WichteliDto wichteli) {
 				callbackRetrieveWichel(wichteli);
 			}
-		}).execute();	
+		});	
 	}
 	
 	private void callbackRetrieveWichel(WichteliDto wichteli){
