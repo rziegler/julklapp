@@ -23,6 +23,7 @@ import ch.bbv.julklapp.password.PasswordGenerator;
 import ch.bbv.julklapp.shuffle.RuthsAlgorithm;
 import ch.bbv.julklapp.shuffle.Shuffler;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -93,7 +94,7 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		memberEntity.setProperty("firstName", memberDto.getFirstName());
 		memberEntity.setProperty("name", memberDto.getName());
 		memberEntity.setProperty("email", memberDto.getEmail());
-		memberEntity.setProperty("image", memberDto.getImage());
+		memberEntity.setProperty("image", new Blob(memberDto.getImage()));
 		memberEntity.setProperty("circleKey", circleEntity.getKey());
 
 		datastore.put(memberEntity);

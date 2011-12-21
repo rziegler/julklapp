@@ -5,6 +5,7 @@ import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Entity;
 
 class DatastoreHelper {
@@ -20,14 +21,16 @@ class DatastoreHelper {
 		result.setFirstName((String) entity.getProperty("firstName"));
 		result.setName((String) entity.getProperty("name"));
 		result.setEmail((String) entity.getProperty("email"));
-		result.setImage((String) entity.getProperty("image"));
+		Blob blob = (Blob) entity.getProperty("image");
+		result.setImage(blob.getBytes());
 		return result;
 	}
 
 	static WichteliDto entityToWichteliDto(Entity entity) {
 		String firstName = (String) entity.getProperty("firstName");
 		String name = (String) entity.getProperty("name");
-		WichteliDto result = new WichteliDto(firstName, name);
+		Blob blob = (Blob) entity.getProperty("image");
+		WichteliDto result = new WichteliDto(firstName, name, blob.getBytes());
 		return result;
 	}
 

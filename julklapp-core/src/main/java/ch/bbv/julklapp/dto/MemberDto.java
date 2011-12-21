@@ -7,14 +7,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MemberDto {
-	
+
 	private String name;
-	
+
 	private String firstName;
-	
+
 	private String email;
-	
-	private String image;
+
+	private byte[] image;
 
 	public String getName() {
 		return name;
@@ -40,11 +40,11 @@ public class MemberDto {
 		this.email = email;
 	}
 
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
 }
