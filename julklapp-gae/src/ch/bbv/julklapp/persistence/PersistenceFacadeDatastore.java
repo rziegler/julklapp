@@ -31,6 +31,9 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.Transform;
 
 public class PersistenceFacadeDatastore implements PersistenceFacade {
 
@@ -205,5 +208,25 @@ public class PersistenceFacadeDatastore implements PersistenceFacade {
 		q.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, key);
 		PreparedQuery pq = datastore.prepare(q);
 		return pq.asSingleEntity();
+	}
+
+	@Override
+	public Image getMemberImageInCircle(String circleName, String memberName, int level) {
+		Entity member = getMemberInCircleByName(circleName, memberName);
+
+		Blob imageBlob = (Blob) member.getProperty("image");
+		Image image = ImagesServiceFactory.makeImage(imageBlob.getBytes());
+		image = transformImage(image, level);
+
+		return image;
+	}
+
+	private Image transformImage(Image image, int level) {
+		Image transformedImage = image;
+		if (level > 0) {
+			Transform vertikalFlip = ImagesServiceFactory.makeVerticalFlip();
+			transformedImage = ImagesServiceFactory.getImagesService().applyTransform(vertikalFlip, image);
+		}
+		return transformedImage;
 	}
 }

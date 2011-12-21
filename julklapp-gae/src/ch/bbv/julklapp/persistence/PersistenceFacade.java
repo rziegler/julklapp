@@ -7,17 +7,17 @@ import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
 
+import com.google.appengine.api.images.Image;
+
 public interface PersistenceFacade {
 
 	CircleDto getCircleDtoByName(String circleName);
 
-	MemberDto getMemberDtoInCircleByName(String circleName,
-			String memberName);
+	MemberDto getMemberDtoInCircleByName(String circleName, String memberName);
 
 	CircleDto createCircle(CircleDto circleDto);
 
-	MemberDto createMember(String circleName,
-			MemberDto memberDto);
+	MemberDto createMember(String circleName, MemberDto memberDto);
 
 	List<CircleDto> getCircleDtos();
 
@@ -26,7 +26,9 @@ public interface PersistenceFacade {
 	void shuffle(String name);
 
 	void notify(String name);
-	WichteliDto getWichteli(String name, String memberName,
-			CredentialsDto value);
+
+	WichteliDto getWichteli(String name, String memberName, CredentialsDto value);
+
+	Image getMemberImageInCircle(String circleName, String memberName, int level);
 
 }

@@ -18,6 +18,7 @@ import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
@@ -73,14 +74,14 @@ public class JulklappClient {
 		resource = client.resource(uri);
 	}
 
-	public void initializeCircles() throws InterruptedException {
+	public void initializeCircles() {
 		putCircle(CIRCLE_FIRST);
 		putCircle(CIRCLE_SECOND);
 		putCircle(CIRCLE_THIRD);
 		System.out.println("Done [" + resource.getURI().toString() + "]");
 	}
 
-	public void initializeMembers() throws InterruptedException {
+	public void initializeMembers() {
 		initMembers(CIRCLE_FIRST, 2);
 		initMembers(CIRCLE_SECOND, 3);
 		initMembers(CIRCLE_THIRD, 4);
@@ -99,8 +100,11 @@ public class JulklappClient {
 		WichteliDto w1 = queryWichteli(CIRCLE_FIRST, ueli, "ovedvdac");
 		WichteliDto w2 = queryWichteli(CIRCLE_FIRST, ruth, "bmzfnrje");
 
-		writeImage("ueli-" + w1.getFirstname(), w1.getImage());
-		writeImage("ruth-" + w2.getFirstname(), w2.getImage());
+		queryWichteliImage(CIRCLE_FIRST, w1);
+		queryWichteliImage(CIRCLE_FIRST, w2);
+
+		// writeImage("ueli-" + w1.getFirstname(), w1.getImage());
+		// writeImage("ruth-" + w2.getFirstname(), w2.getImage());
 	}
 
 	public void queryWichteliForSecondCircle() {
@@ -161,7 +165,17 @@ public class JulklappClient {
 		MemberDto result = builder.get(MemberDto.class);
 
 		return member;
+	}
 
+	private void queryWichteliImage(String circle, WichteliDto wichteli) {
+		WebResource resourceWithPath = resource.path("/circles/" + circle + "/" + wichteli.getFirstname() + "/image");
+
+		Builder builder = resourceWithPath.accept("image/*").type(MediaType.TEXT_HTML);
+		ClientResponse result = builder.get(ClientResponse.class);
+
+		System.out.println("Response for Wichteli " + wichteli.getFirstname());
+		System.out.println(result.getType());
+		System.out.println(result.toString());
 	}
 
 	private static byte[] getImage(String image) {

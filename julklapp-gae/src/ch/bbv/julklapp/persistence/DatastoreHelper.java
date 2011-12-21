@@ -29,8 +29,7 @@ class DatastoreHelper {
 	static WichteliDto entityToWichteliDto(Entity entity) {
 		String firstName = (String) entity.getProperty("firstName");
 		String name = (String) entity.getProperty("name");
-		Blob blob = (Blob) entity.getProperty("image");
-		WichteliDto result = new WichteliDto(firstName, name, blob.getBytes());
+		WichteliDto result = new WichteliDto(firstName, name);
 		return result;
 	}
 

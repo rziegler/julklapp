@@ -15,6 +15,8 @@ import ch.bbv.julklapp.dto.CredentialsDto;
 import ch.bbv.julklapp.dto.MemberDto;
 import ch.bbv.julklapp.dto.WichteliDto;
 
+import com.google.appengine.api.images.Image;
+
 public class PersistenceFacadeJPA implements PersistenceFacade {
 
 	private final EntityManager entityManager;
@@ -146,8 +148,7 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 	public WichteliDto getWichteli(String name, String memberName, CredentialsDto value) {
 		Member member = getMemberInCircleByName(name, memberName);
 		if (member.getPassword().equals(value.getPassword()) && member.getEmail().equals(value.getUsername())) {
-			WichteliDto result = new WichteliDto(member.getWichteli().getFirstName(), member.getWichteli().getName(),
-					null);
+			WichteliDto result = new WichteliDto(member.getWichteli().getFirstName(), member.getWichteli().getName());
 			return result;
 		}
 		throw new IllegalStateException("Invalid credentials.");
@@ -159,4 +160,9 @@ public class PersistenceFacadeJPA implements PersistenceFacade {
 
 	}
 
+	@Override
+	public Image getMemberImageInCircle(String circleName, String memberName, int level) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
