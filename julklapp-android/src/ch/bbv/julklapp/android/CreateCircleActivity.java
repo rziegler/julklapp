@@ -1,7 +1,5 @@
 package ch.bbv.julklapp.android;
 
-import ch.bbv.julklapp.android.config.Config;
-import ch.bbv.julklapp.android.rs.ClientFacade;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +8,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import ch.bbv.julklapp.android.rs.ClientFacade;
+import ch.bbv.julklapp.android.rs.task.GenericJulklappTask;
+import ch.bbv.julklapp.android.rs.task.Task;
+import ch.bbv.julklapp.dto.CircleDto;
 
 public class CreateCircleActivity extends Activity implements OnClickListener {
 	
@@ -32,12 +34,26 @@ public class CreateCircleActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View view) {
-		String circleName = circleNameField.getText().toString();
-		Intent intent = new Intent(getBaseContext(), AddMemberActivity.class);
-		intent.putExtra(Constants.EXTRA_CIRCLE_NAME, circleName);
-		ClientFacade facade = new ClientFacade(Config.URL);
-		facade.putCircle(circleName);
+		final String circleName = circleNameField.getText().toString();
+		
+		GenericJulklappTask.create(this, new Task<CircleDto>(){
+
+			@Override
+			public CircleDto execute(ClientFacade facade) {
+				return facade.putCircle(circleName);
+			}
+
+			@Override
+			public void callback(CircleDto circle) {
+				callbackAfterCircleCreation(circle);	
+			}
+		}).execute();	
+	}
+	
+	private void callbackAfterCircleCreation(CircleDto circle){
 		finish();
+		Intent intent = new Intent(getBaseContext(), AddMemberActivity.class);
+		intent.putExtra(Constants.EXTRA_CIRCLE_NAME, circle.getName());
 		startActivity(intent);
 	}
 

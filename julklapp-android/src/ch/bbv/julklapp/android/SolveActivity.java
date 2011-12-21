@@ -8,12 +8,8 @@ import android.widget.TextView;
 public class SolveActivity extends Activity {
    
 	private static final String TAG = SolveActivity.class.getSimpleName();
-	
 	private TextView titleField;
-
 	
-
-	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG,"Show wichtel.");
@@ -24,8 +20,6 @@ public class SolveActivity extends Activity {
         titleField.setText(titleField.getText()+getFirstName()+" "+getName());     
     }
 
-
-
 	private String getFirstName() {
 		return getIntent().getExtras().getString(Constants.EXTRA_WICHTELI_FIRSTNAME);
 	}
@@ -33,6 +27,4 @@ public class SolveActivity extends Activity {
 	private String getName() {
 		return getIntent().getExtras().getString(Constants.EXTRA_WICHTELI_NAME);
 	}
-
-	
 }

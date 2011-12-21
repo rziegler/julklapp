@@ -33,7 +33,8 @@
     <EditText
         android:id="@+id/loginFirstname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/textView3"
@@ -45,7 +46,8 @@
     <EditText
         android:id="@+id/loginUsername"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:singleLine="true" >
 
         <requestFocus />
     </EditText>
@@ -61,7 +63,8 @@
         android:id="@+id/loginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/loginSolveButton"

@@ -11,8 +11,6 @@
         android:text="What do you want to do today?"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    
-
     <RadioGroup
         android:id="@+id/WorkflowSelection"
         android:layout_width="fill_parent"

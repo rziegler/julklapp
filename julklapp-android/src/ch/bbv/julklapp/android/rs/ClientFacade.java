@@ -25,14 +25,15 @@ public class ClientFacade {
 		Engine.getInstance().getRegisteredClients().add(new HttpClientHelper(null));
 	}
 
-	public void putCircle(String name) {
+	public CircleDto putCircle(String name) {
 		Log.i(TAG, "Create Circle. Name: "+name);
 		ClientResource resource = new ClientResource(Config.URL + "circles/" + name);
 		CircleDto circle = new CircleDto();
 		circle.setName(name);
 		resource.setProtocol(Protocol.HTTP);
-		CircleDto circleX = resource.put(circle, CircleDto.class);
-		Log.i(TAG, "Circle created. Name: "+circleX.getName());
+		CircleDto result = resource.put(circle, CircleDto.class);
+		Log.i(TAG, "Circle created. Name: "+result.getName());
+		return result;
 	}
 	
 	public MemberDto putMember(String circle, MemberDto member) {
@@ -80,6 +81,8 @@ public class ClientFacade {
 		WichteliDto wichteli = resource.post(cred, WichteliDto.class);
 		return wichteli;
 	}
+
+	
 
 
 }

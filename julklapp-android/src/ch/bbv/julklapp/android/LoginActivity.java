@@ -12,8 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import ch.bbv.julklapp.android.config.Config;
 import ch.bbv.julklapp.android.rs.ClientFacade;
+import ch.bbv.julklapp.android.rs.task.GenericJulklappTask;
+import ch.bbv.julklapp.android.rs.task.Task;
 import ch.bbv.julklapp.dto.CircleDto;
 import ch.bbv.julklapp.dto.WichteliDto;
 
@@ -28,7 +29,6 @@ public class LoginActivity extends Activity implements OnClickListener  {
 
 	private EditText firstname;
 
-	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG,"Add member activity.");
@@ -36,28 +36,61 @@ public class LoginActivity extends Activity implements OnClickListener  {
         setContentView(R.layout.login);
         
         spinner = (Spinner)findViewById(R.id.loginSpinner);
-        ArrayAdapter<CircleDto> arrayAdapter = new ArrayAdapter<CircleDto>(getBaseContext(), android.R.layout.simple_list_item_1, getCircles());
-       
-        spinner.setAdapter(arrayAdapter);
-        
         username = (EditText)findViewById(R.id.loginUsername);
         password = (EditText)findViewById(R.id.loginPassword);
         firstname = (EditText)findViewById(R.id.loginFirstname);
-        
+
         Button button = (Button)findViewById(R.id.loginSolveButton);
         button.setOnClickListener(this);
-       
         
+        initCircleSpinner();
     }
+
+	private void initCircleSpinner( ) {
+		GenericJulklappTask.create(this, new Task<List<CircleDto>>(){
+
+			@Override
+			public List<CircleDto> execute(ClientFacade facade) {
+				return facade.getCircles();
+			}
+
+			@Override
+			public void callback(List<CircleDto> circles) {
+				callbackInitCircleSpinner(circles);
+			}
+			
+		}).execute();
+		
+	}
+	
+	private void callbackInitCircleSpinner(List<CircleDto> circles){
+		ArrayAdapter<CircleDto> arrayAdapter = new ArrayAdapter<CircleDto>(getBaseContext(), android.R.layout.simple_list_item_1, circles);
+	    spinner.setAdapter(arrayAdapter);
+	}
 
 	@Override
 	public void onClick(View button) {
-		ClientFacade facade = new ClientFacade(Config.URL);	
-		String usernameString = username.getText().toString();
-		String passwordString = password.getText().toString();
-		String firstnameString = firstname.getText().toString();
-		CircleDto circle = (CircleDto) spinner.getSelectedItem();
-		WichteliDto wichteli = facade.queryWichetli(circle.getName(), firstnameString, usernameString, passwordString);
+		
+		
+		GenericJulklappTask.create(this, new Task<WichteliDto>(){
+
+			@Override
+			public WichteliDto execute(ClientFacade facade) {
+				final String usernameString = username.getText().toString();
+				final String passwordString = password.getText().toString();
+				final String firstnameString = firstname.getText().toString();
+				final CircleDto circle = (CircleDto) spinner.getSelectedItem();
+				return facade.queryWichetli(circle.getName(), firstnameString, usernameString, passwordString);
+			}
+
+			@Override
+			public void callback(WichteliDto wichteli) {
+				callbackRetrieveWichel(wichteli);
+			}
+		}).execute();	
+	}
+	
+	private void callbackRetrieveWichel(WichteliDto wichteli){
 		if(wichteli != null){
 			Intent intent = new Intent(getBaseContext(), SolveActivity.class);
 			intent.putExtra(Constants.EXTRA_WICHTELI_FIRSTNAME, wichteli.getFirstname());
@@ -68,10 +101,4 @@ public class LoginActivity extends Activity implements OnClickListener  {
 			password.getText().clear();
 		}
 	}
-
-	private List<CircleDto> getCircles() {
-		ClientFacade facade = new ClientFacade(Config.URL);
-		return facade.getCircles();
-	}
-	
 }

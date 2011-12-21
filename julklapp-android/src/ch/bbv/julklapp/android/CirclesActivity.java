@@ -11,8 +11,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import ch.bbv.julklapp.android.config.Config;
 import ch.bbv.julklapp.android.rs.ClientFacade;
+import ch.bbv.julklapp.android.rs.task.GenericJulklappTask;
+import ch.bbv.julklapp.android.rs.task.Task;
 import ch.bbv.julklapp.dto.CircleDto;
 
 public class CirclesActivity extends Activity implements OnItemClickListener  {
@@ -20,23 +21,35 @@ public class CirclesActivity extends Activity implements OnItemClickListener  {
 	private static final String TAG = CirclesActivity.class.getSimpleName();
 	private ListView circleList;
 	
-
-	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG,"Add member activity.");
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.circles);
-        
         circleList = (ListView)findViewById(R.id.circlesListView);
-        ArrayAdapter<CircleDto> arrayAdapter = new ArrayAdapter<CircleDto>(getBaseContext(), android.R.layout.simple_list_item_1, getCircles());
+        initCircleList();
+    }
+    
+    private void initCircleList() {
+		GenericJulklappTask.create(this, new Task<List<CircleDto>>(){
+
+			@Override
+			public List<CircleDto> execute(ClientFacade facade) {
+				return facade.getCircles();
+			}
+
+			@Override
+			public void callback(List<CircleDto> circles) {
+				initCircleListCallback(circles);
+			}
+			
+		}).execute();
+	}
+	
+	private void initCircleListCallback(List<CircleDto> circles){
+		ArrayAdapter<CircleDto> arrayAdapter = new ArrayAdapter<CircleDto>(getBaseContext(), android.R.layout.simple_list_item_1, circles);
 		circleList.setAdapter(arrayAdapter);
 		circleList.setOnItemClickListener(this);  
-    }
-
-	private List<CircleDto> getCircles() {
-		ClientFacade facade = new ClientFacade(Config.URL);
-		return facade.getCircles();
 	}
 
 	@Override
