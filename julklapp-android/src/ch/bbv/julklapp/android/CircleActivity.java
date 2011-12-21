@@ -3,6 +3,7 @@ package ch.bbv.julklapp.android;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,6 +60,9 @@ public class CircleActivity extends Activity implements OnClickListener  {
 	public void onClick(View button) {	
 		switch(button.getId()){
 		case R.id.circleButtonAddMember:
+			Intent intent = new Intent(getBaseContext(), AddMemberActivity.class);
+			intent.putExtra(Constants.EXTRA_CIRCLE_NAME, getCircleName());
+			startActivity(intent);
 			finish();
 			break;
 		case R.id.circleButtonShuffle:
