@@ -37,8 +37,8 @@ public class CreateCircleActivity extends Activity implements OnClickListener {
 		intent.putExtra(Constants.EXTRA_CIRCLE_NAME, circleName);
 		ClientFacade facade = new ClientFacade(Config.URL);
 		facade.putCircle(circleName);
-		startActivity(intent);
 		finish();
+		startActivity(intent);
 	}
 
 }
