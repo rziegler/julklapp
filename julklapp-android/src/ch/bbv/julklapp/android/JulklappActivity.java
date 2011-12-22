@@ -12,7 +12,6 @@ public class JulklappActivity extends Activity implements OnCheckedChangeListene
 	private static final String TAG = JulklappActivity.class.getSimpleName();
 	private RadioGroup radioGroup;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG, "Start Julklapp Application.");
@@ -21,13 +20,16 @@ public class JulklappActivity extends Activity implements OnCheckedChangeListene
 
 		radioGroup = (RadioGroup) findViewById(R.id.WorkflowSelection);
 		radioGroup.setOnCheckedChangeListener(this);
-
+		
 	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int arg1) {
+		startNextActivity(group.getCheckedRadioButtonId());
+	}
 
-		switch (group.getCheckedRadioButtonId()) {
+	private void startNextActivity(int id) {
+		switch (id) {
 		case R.id.createCircle:
 			startActivity(new Intent(getBaseContext(), CreateCircleActivity.class));
 			break;
@@ -41,4 +43,5 @@ public class JulklappActivity extends Activity implements OnCheckedChangeListene
 			break;
 		}
 	}
+
 }

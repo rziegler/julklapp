@@ -25,14 +25,15 @@ public class ClientFacade {
 		Engine.getInstance().getRegisteredClients().add(new HttpClientHelper(null));
 	}
 
-	public void putCircle(String name) {
+	public CircleDto putCircle(String name) {
 		Log.i(TAG, "Create Circle. Name: "+name);
 		ClientResource resource = new ClientResource(Config.URL + "circles/" + name);
 		CircleDto circle = new CircleDto();
 		circle.setName(name);
 		resource.setProtocol(Protocol.HTTP);
-		CircleDto circleX = resource.put(circle, CircleDto.class);
-		Log.i(TAG, "Circle created. Name: "+circleX.getName());
+		CircleDto result = resource.put(circle, CircleDto.class);
+		Log.i(TAG, "Circle created. Name: "+result.getName());
+		return result;
 	}
 	
 	public MemberDto putMember(String circle, MemberDto member) {
@@ -68,18 +69,20 @@ public class ClientFacade {
 		resource.get();
 	}
 	
-	public WichteliDto queryWichetli(String circle, String username, String password) {
+	public WichteliDto queryWichetli(String circle, String firstname, String email, String password) {
 		Log.i(TAG, "Retrieve wichteli.");
-		ClientResource resource = new ClientResource(Config.URL +"/circles/" + circle + "/" + username + "/wichteli");
+		ClientResource resource = new ClientResource(Config.URL +"/circles/" + circle + "/" + firstname + "/wichteli");
 		resource.setProtocol(Protocol.HTTP);
 	
 		CredentialsDto cred = new CredentialsDto();
-		cred.setUsername(username);
+		cred.setUsername(email);
 		cred.setPassword(password);
 	
 		WichteliDto wichteli = resource.post(cred, WichteliDto.class);
 		return wichteli;
 	}
+
+	
 
 
 }

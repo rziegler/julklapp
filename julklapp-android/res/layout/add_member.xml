@@ -21,7 +21,8 @@
     <EditText
         android:id="@+id/addMemberEditFirstname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:singleLine="true" >
 
         <requestFocus />
     </EditText>
@@ -36,7 +37,8 @@
     <EditText
         android:id="@+id/addMemberEditName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/addMemberTextEmail"
@@ -49,7 +51,8 @@
         android:id="@+id/addMemberEditEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:singleLine="true" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"

@@ -1,6 +1,5 @@
 package ch.bbv.julklapp.android;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +8,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import ch.bbv.julklapp.android.config.Config;
 import ch.bbv.julklapp.android.rs.ClientFacade;
+import ch.bbv.julklapp.android.rs.task.GenericJulklappTask;
+import ch.bbv.julklapp.android.rs.task.Task;
 import ch.bbv.julklapp.dto.MemberDto;
 
-public class AddMemberActivity extends Activity implements OnClickListener  {
+public class AddMemberActivity extends AbstractCircleActivity implements OnClickListener  {
    
 	private static final String TAG = AddMemberActivity.class.getSimpleName();
 	
@@ -25,7 +25,7 @@ public class AddMemberActivity extends Activity implements OnClickListener  {
 	private EditText email;
 	private EditText name;
 
-	/** Called when the activity is first created. */
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG,"Add member activity.");
@@ -43,28 +43,42 @@ public class AddMemberActivity extends Activity implements OnClickListener  {
         addButton.setOnClickListener(this);
         finishButton = (Button)findViewById(R.id.addMemberButtonFinish);
         finishButton.setOnClickListener(this);
-        
     }
 
-	private String getCircleName() {
-		return getIntent().getExtras().getString(Constants.EXTRA_CIRCLE_NAME);
-	}
 
 	@Override
-	public void onClick(View button) {
-		ClientFacade facade = new ClientFacade(Config.URL);
-		MemberDto member = extractMemberData();
-		facade.putMember(getCircleName(), member);
-		if(button.getId() == R.id.addMemberButtonAdd){
-			Intent intent = new Intent(getBaseContext(), AddMemberActivity.class);
-			intent.putExtra(Constants.EXTRA_CIRCLE_NAME, getCircleName());
-			startActivity(intent);
-		}else if(button.getId() == R.id.addMemberButtonFinish){
-			Intent intent = new Intent(getBaseContext(), CircleActivity.class);
-			intent.putExtra(Constants.EXTRA_CIRCLE_NAME, getCircleName());
-			startActivity(intent);
-		}
+	public void onClick(final View button) {
 		
+		GenericJulklappTask.execute(this, new Task<Void>(){
+
+			@Override
+			public Void execute(ClientFacade facade) {
+				MemberDto member = extractMemberData();
+				facade.putMember(getCircleName(), member);
+				return null;
+			}
+
+			@Override
+			public void callback(Void v) {
+				callbackAfterPuttingTheMember(button);	
+			}
+		});
+	}
+
+	private void callbackAfterPuttingTheMember(View button) {
+		if(button.getId() == R.id.addMemberButtonAdd){
+			startNextActivity(AddMemberActivity.class);
+		}else if(button.getId() == R.id.addMemberButtonFinish){
+			startNextActivity(CircleActivity.class);
+		}
+	}
+
+
+	private void startNextActivity(Class<?> nextActicity) {
+		Intent intent = new Intent(getBaseContext(), nextActicity);
+		intent.putExtra(Constants.EXTRA_CIRCLE_NAME, getCircleName());
+		finish();
+		startActivity(intent);
 	}
 
 	private MemberDto extractMemberData() {
@@ -74,11 +88,4 @@ public class AddMemberActivity extends Activity implements OnClickListener  {
 		member.setEmail(email.getText().toString());
 		return member;
 	}
-	
-	
-
-
-	
-
-	
 }

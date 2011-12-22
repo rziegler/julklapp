@@ -5,6 +5,7 @@ public class WichteliDto {
 
 	private String name;
 	private String firstname;
+	private byte[] image;
 	
 	public WichteliDto() {
 		
@@ -30,5 +31,12 @@ public class WichteliDto {
 	
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
+	}
+	
+	public byte[] getImage() {
+		return image;
+	}
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 }

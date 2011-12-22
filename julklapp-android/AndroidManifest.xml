@@ -33,6 +33,7 @@
         </activity>
          <activity android:name=".SolveActivity" >
         </activity>
+        <service android:enabled="true" android:name=".rs.ClientFacade" />
     </application>
 
 </manifest>
