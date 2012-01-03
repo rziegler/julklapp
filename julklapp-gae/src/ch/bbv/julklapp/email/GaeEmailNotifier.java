@@ -26,7 +26,7 @@ public class GaeEmailNotifier implements EmailNotifier {
 		String msgBody = createMessageBody(circle, recipient, wichteli, credentials);
 
 		Message msg = new MimeMessage(session);
-		msg.setFrom(new InternetAddress("ziegler.ruth@gmail.com", "Julklapp Admin"));
+		msg.setFrom(new InternetAddress("zieg" + "ler.r" + " uth" + "@gma" + "il.com", "Julklapp Admin"));
 		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient.getEmail(), recipient.getFirstName()
 				+ " " + recipient.getName()));
 		msg.setSubject("Your Julklapp Wichteli has been assigned.");

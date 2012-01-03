@@ -42,7 +42,7 @@ public class JulklappClient {
 		try {
 			members.add(createMember("Ueli", "Kurmann", "ueli.kurmann@gmail.com", "ueli.gif"));
 			members.add(createMember("Ruth", "Ziegler", "ziegler.ruth@gmail.com", "ruth.gif"));
-			members.add(createMember("Lukas", "Weibel", "ueli.kurmann@bbv.ch", "lukas.gif"));
+			members.add(createMember("Lukas", "Weibel", "ueli.kurmann@bbv.ch", "lukas.png"));
 			members.add(createMember("Gabi", "Gwinner", "ruth.ziegler@bbv.ch", "gabi.gif"));
 
 			ueli = members.get(0);
@@ -64,7 +64,7 @@ public class JulklappClient {
 		member.setName(name);
 		member.setFirstName(firstName);
 		member.setEmail(email);
-		member.setImage(getImage(image));
+		member.setImage(getImage(firstName, image));
 		return member;
 	}
 
@@ -97,8 +97,8 @@ public class JulklappClient {
 	}
 
 	public void queryWichteliForFirstCircle() {
-		WichteliDto w1 = queryWichteli(CIRCLE_FIRST, ueli, "ovedvdac");
-		WichteliDto w2 = queryWichteli(CIRCLE_FIRST, ruth, "bmzfnrje");
+		WichteliDto w1 = queryWichteli(CIRCLE_FIRST, ueli, "spzovjvq");
+		WichteliDto w2 = queryWichteli(CIRCLE_FIRST, ruth, "kmzgozjw");
 
 		queryWichteliImage(CIRCLE_FIRST, w1);
 		queryWichteliImage(CIRCLE_FIRST, w2);
@@ -178,13 +178,17 @@ public class JulklappClient {
 		System.out.println(result.toString());
 	}
 
-	private static byte[] getImage(String image) {
+	private static byte[] getImage(String firstName, String image) {
 		InputStream is = JulklappClient.class.getClassLoader().getResourceAsStream(image);
 		BufferedImage bufferedImage;
 		try {
 			bufferedImage = ImageIO.read(is);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(bufferedImage, "gif", baos);
+			if (firstName.equals("Lukas")) {
+				ImageIO.write(bufferedImage, "png", baos);
+			} else {
+				ImageIO.write(bufferedImage, "gif", baos);
+			}
 			byte[] imageBytes = baos.toByteArray();
 			return imageBytes;
 		} catch (IOException e) {
